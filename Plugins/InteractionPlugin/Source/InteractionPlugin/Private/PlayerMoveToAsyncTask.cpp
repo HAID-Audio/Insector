@@ -49,11 +49,12 @@ namespace
 	}
 }
 
-UPlayerMoveToAsyncTask* UPlayerMoveToAsyncTask::PlayerMoveTo(AController* Controller, const FHitResult& HitResult)
+UPlayerMoveToAsyncTask* UPlayerMoveToAsyncTask::PlayerMoveTo(AController* Controller, const FHitResult& HitResult, const FPlayerMoveToArgs& PlayerMoveToArgs)
 {
 	UPlayerMoveToAsyncTask* BlueprintNode = NewObject<UPlayerMoveToAsyncTask>();
 	BlueprintNode->Controller = Controller;
 	BlueprintNode->HitResult = HitResult;
+	BlueprintNode->PlayerMoveToArgs = PlayerMoveToArgs;
 	return BlueprintNode;
 }
 
@@ -87,7 +88,18 @@ void UPlayerMoveToAsyncTask::Activate()
 		return;
 	}
 
-	const bool bAlreadyAtGoal = PFollowComp->HasReached(HitResult.Location, EPathFollowingReachMode::OverlapAgent);
+	FVector GoalLocation;
+
+	if (PlayerMoveToArgs.bHasPreferredMoveToLocation)
+	{
+		GoalLocation = PlayerMoveToArgs.PreferredMoveToLocation;
+	}
+	else
+	{
+		GoalLocation = HitResult.Location;
+	}
+
+	const bool bAlreadyAtGoal = PFollowComp->HasReached(GoalLocation, EPathFollowingReachMode::OverlapAgent);
 
 	// script source, keep only one move request at time
 	if (PFollowComp->GetStatus() != EPathFollowingStatus::Idle)
@@ -113,11 +125,11 @@ void UPlayerMoveToAsyncTask::Activate()
 		const ANavigationData* NavData = NavSys->GetNavDataForProps(Controller->GetNavAgentPropertiesRef(), AgentNavLocation);
 		if (NavData)
 		{
-			FPathFindingQuery Query(Controller, *NavData, AgentNavLocation, HitResult.Location);
+			FPathFindingQuery Query(Controller, *NavData, AgentNavLocation, GoalLocation);
 			FPathFindingResult Result = NavSys->FindPathSync(Query);
 			if (Result.IsSuccessful())
 			{
-				RequestID = PFollowComp->RequestMove(FAIMoveRequest(HitResult.Location), Result.Path);
+				RequestID = PFollowComp->RequestMove(FAIMoveRequest(GoalLocation), Result.Path);
 				PFollowComp->OnRequestFinished.AddUObject(this, &UPlayerMoveToAsyncTask::OnMoveComplete);
 			}
 			else if (PFollowComp->GetStatus() != EPathFollowingStatus::Idle)

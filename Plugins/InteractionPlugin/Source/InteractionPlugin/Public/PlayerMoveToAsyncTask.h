@@ -10,6 +10,18 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerMoveToAsyncTaskOutputPin, FHitResult, ClickResult);
 
+USTRUCT(BlueprintType)
+struct FPlayerMoveToArgs
+{
+	GENERATED_BODY()
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Move To Args")
+		FVector PreferredMoveToLocation;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Move To Args")
+		bool bHasPreferredMoveToLocation;
+};
+
 /**
  * 
  */
@@ -20,7 +32,7 @@ class INTERACTIONPLUGIN_API UPlayerMoveToAsyncTask : public UBlueprintAsyncActio
 	
 public:
 	UFUNCTION(BlueprintCallable, meta = (BlueprintInternalUseOnly = "true", WorldContext = "WorldContextObject"), Category = "AI|Navigation")
-		static UPlayerMoveToAsyncTask* PlayerMoveTo(class AController* Controller, const FHitResult& HitResult);
+		static UPlayerMoveToAsyncTask* PlayerMoveTo(class AController* Controller, const FHitResult& HitResult, const FPlayerMoveToArgs& PlayerMoveToArgs);
 
 public:
 	UPROPERTY(BlueprintAssignable)
@@ -35,6 +47,9 @@ protected:
 
 	UPROPERTY()
 		FHitResult HitResult;
+
+	UPROPERTY()
+		FPlayerMoveToArgs PlayerMoveToArgs;
 
 	UPROPERTY()
 		FAIRequestID RequestID;
