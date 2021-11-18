@@ -2,6 +2,9 @@
 
 Developed with Unreal Engine 4
 
-Some assets provided by Quaternius, TheLifeIsYours from open game art.
+3D assets from open game art provided by 
+Quaternius, Home Interior 
+TheLifeIsYours, Piano
+Sandsound, Drumkit
 
 
