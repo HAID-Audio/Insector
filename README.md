@@ -6,5 +6,6 @@ Developed with Unreal Engine 4
 Quaternius, Home Interior 
 TheLifeIsYours, Piano
 Sandsound, Drumkit
+Light Game Studio, Guitar
 
 
