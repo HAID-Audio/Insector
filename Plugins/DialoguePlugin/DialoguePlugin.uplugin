@@ -1,0 +1,28 @@
+{
+	"FileVersion": 3,
+	"Version": 5,
+	"VersionName": "1.4",
+	"FriendlyName": "Dialogue Plugin",
+	"Description": "A node-based dialogue editor.",
+	"Category": "Misc",
+	"CreatedBy": "CodeSpartan",
+	"CreatedByURL": "https://forums.unrealengine.com/showthread.php?105999-Dialogue-Plugin",
+	"DocsURL": "https://docs.google.com/document/d/1Zbm_pAdPScNJSnJ4wfRGxFSTpf18Pu-1XBdid5E9sg4/",
+	"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/847aa65dc3024a37ae83ed89307524bd",
+	"SupportURL": "mailto:codespartan.supp@gmail.com",
+	"EngineVersion": "4.27.0",
+	"CanContainContent": true,
+	"Installed": true,
+	"Modules": [
+		{
+			"Name": "DialoguePlugin",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "DialoguePluginEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
+		}
+	]
+}
